@@ -14,19 +14,18 @@ resource "aws_security_group_rule" "ssh_ingress" {
   to_port           = "22"
   protocol          = "tcp"
   cidr_blocks       = "${var.allowed_cidr}"
-  ipv6_cidr_blocks  = "${var.allowed_ipv6_cidr}"
   security_group_id = "${aws_security_group.bastion.id}"
 }
 
-resource "aws_security_group_rule" "ssh_sg_ingress" {
-  count                    = "${length(var.allowed_security_groups)}"
-  type                     = "ingress"
-  from_port                = "22"
-  to_port                  = "22"
-  protocol                 = "tcp"
-  source_security_group_id = "${element(var.allowed_security_groups, count.index)}"
-  security_group_id        = "${aws_security_group.bastion.id}"
-}
+//resource "aws_security_group_rule" "ssh_sg_ingress" {
+//  count                    = "${length(var.allowed_security_groups)}"
+//  type                     = "ingress"
+//  from_port                = "22"
+//  to_port                  = "22"
+//  protocol                 = "tcp"
+//  source_security_group_id = "${element(var.allowed_security_groups, count.index)}"
+//  security_group_id        = "${aws_security_group.bastion.id}"
+//}
 
 resource "aws_security_group_rule" "bastion_all_egress" {
   type      = "egress"
@@ -38,9 +37,9 @@ resource "aws_security_group_rule" "bastion_all_egress" {
     "0.0.0.0/0",
   ]
 
-  ipv6_cidr_blocks = [
-    "::/0",
-  ]
+//  ipv6_cidr_blocks = [
+//    "::/0",
+//  ]
 
   security_group_id = "${aws_security_group.bastion.id}"
 }
@@ -57,21 +56,6 @@ data "template_file" "user_data" {
     additional_user_data_script = "${var.additional_user_data_script}"
   }
 }
-
-//resource "aws_instance" "bastion" {
-//  ami                    = "${var.ami}"
-//  instance_type          = "${var.instance_type}"
-//  iam_instance_profile   = "${var.iam_instance_profile}"
-//  subnet_id              = "${var.subnet_id}"
-//  vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
-//  user_data              = "${template_file.user_data.rendered}"
-//
-//  count                  = 1
-//
-//  tags {
-//    Name = "${var.name}"
-//  }
-//}
 
 resource "aws_launch_configuration" "bastion" {
   name_prefix       = "${var.name}-"

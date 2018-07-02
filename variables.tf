@@ -2,21 +2,23 @@ variable "allowed_cidr" {
   type = "list"
 
   default = [
-    "0.0.0.0/0",
+    "217.138.118.218/32",
+    "34.248.152.143/32",
+    "34.246.22.72/32"
   ]
 
   description = "A list of CIDR Networks to allow ssh access to."
 }
 
-variable "allowed_ipv6_cidr" {
-  type = "list"
-
-  default = [
-    "::/0",
-  ]
-
-  description = "A list of IPv6 CIDR Networks to allow ssh access to."
-}
+//variable "allowed_ipv6_cidr" {
+//  type = "list"
+//
+//  default = [
+//    "::/0",
+//  ]
+//
+//  description = "A list of IPv6 CIDR Networks to allow ssh access to."
+//}
 
 variable "allowed_security_groups" {
   type        = "list"
